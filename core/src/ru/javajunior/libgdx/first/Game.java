@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  * Основной класс, реализует интерфейс ApplicationListener.
@@ -24,13 +25,22 @@ public class Game extends ApplicationAdapter {
 	private Texture texture;
 
     /**
+     * Регион текстуры - предназначен для работы с частью текстуры.
+     */
+    private TextureRegion textureRegion;
+
+    /**
      * Метод, который инициализирует игру. Этот метод вызывается самым первым,
      * его основная задача - подготовить необходимые ресурсы.
      */
     @Override
 	public void create () {
         spriteBatch = new SpriteBatch();
+        // Инициализируем текстуру графическим файлом.
         texture = new Texture("badlogic.jpg");
+        // Инициализируем регион куском рисунка тестуры, огрниченным координатами
+        // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
+        textureRegion = new TextureRegion(texture, 57, 10, 130, 40);
 	}
 
     /**
@@ -44,8 +54,12 @@ public class Game extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         spriteBatch.begin();
-        // Указываем отрисовать текстуру полностью в координатах 0 0.
+        // Указываем отрисовать текстуру полностью в координатах x=0 y=0 от левого
+        // нижнего угла экрана.
         spriteBatch.draw(texture, 0, 0);
+        // Указываем отрисовать часть текстуры в координатах x=300 y=200 от левого
+        // нижнего угла экрана.
+        spriteBatch.draw(textureRegion, 300, 210);
         spriteBatch.end();
 	}
 
