@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -30,6 +31,11 @@ public class Game extends ApplicationAdapter {
     private TextureRegion textureRegion;
 
     /**
+     * Спрайт - та же концепция, что и у TextureRegion, но более продвинутый.
+     */
+    private Sprite sprite;
+
+    /**
      * Метод, который инициализирует игру. Этот метод вызывается самым первым,
      * его основная задача - подготовить необходимые ресурсы.
      */
@@ -41,6 +47,11 @@ public class Game extends ApplicationAdapter {
         // Инициализируем регион куском рисунка тестуры, огрниченным координатами
         // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
         textureRegion = new TextureRegion(texture, 57, 10, 130, 40);
+        // Инициализируем спрайт куском рисунка тестуры, огрниченным координатами
+        // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
+        sprite = new Sprite(texture, 57, 10, 130, 40);
+        sprite.setPosition(300, 150);
+        sprite.setRotation(180);
 	}
 
     /**
@@ -57,9 +68,12 @@ public class Game extends ApplicationAdapter {
         // Указываем отрисовать текстуру полностью в координатах x=0 y=0 от левого
         // нижнего угла экрана.
         spriteBatch.draw(texture, 0, 0);
-        // Указываем отрисовать часть текстуры в координатах x=300 y=200 от левого
+        // Указываем отрисовать регион текстуры в координатах x=300 y=200 от левого
         // нижнего угла экрана.
         spriteBatch.draw(textureRegion, 300, 210);
+        // Указываем отрисовать спрайт в координатах x=300 y=200 от левого
+        // нижнего угла экрана.
+        sprite.draw(spriteBatch);
         spriteBatch.end();
 	}
 
