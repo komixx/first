@@ -4,9 +4,12 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
  * Основной класс, реализует интерфейс ApplicationListener.
@@ -36,22 +39,66 @@ public class Game extends ApplicationAdapter {
     private Sprite sprite;
 
     /**
+     * Сцена - игровое поле.
+     */
+    private Stage stage;
+
+    /**
+     * Actor - актер, объект, являющийся частью сцены.
+     */
+    private Actor actor;
+
+    /**
      * Метод, который инициализирует игру. Этот метод вызывается самым первым,
      * его основная задача - подготовить необходимые ресурсы.
      */
     @Override
 	public void create () {
         spriteBatch = new SpriteBatch();
+
         // Инициализируем текстуру графическим файлом.
         texture = new Texture("badlogic.jpg");
+
         // Инициализируем регион куском рисунка тестуры, огрниченным координатами
         // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
         textureRegion = new TextureRegion(texture, 57, 10, 130, 40);
+
         // Инициализируем спрайт куском рисунка тестуры, огрниченным координатами
         // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
         sprite = new Sprite(texture, 57, 10, 130, 40);
         sprite.setPosition(300, 150);
         sprite.setRotation(180);
+
+        // Инициализаруем сцену, по умолчанию ей заданы размеры экрана.
+        stage = new Stage();
+
+        // Инициализируем актера
+        actor = new Actor(){
+
+            // Инициализируем спрайт куском рисунка тестуры, огрниченным координатами
+            // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
+            Sprite actorSprite = new Sprite(texture, 57, 10, 130, 40);
+
+            // Производит изменения над актером, которые должны были с ним произойти
+            // с момента последней отрисовки. Дергается при вызове метода act у сцены
+            // (или или другого контейнера, который содержит текущего актера).
+            @Override
+            public void act(float delta) {
+                actorSprite.setPosition(300, 50);
+                actorSprite.setRotation(actorSprite.getRotation() + delta);
+            }
+
+            // Отрисовывает актера. Дергается при вызове метода draw у сцены
+            // (или или другого контейнера, который содержит текущего актера).
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                actorSprite.draw(batch, parentAlpha);
+            }
+
+        };
+
+        // Добавляем актера к сцене (привязываем объект к сцене).
+        stage.addActor(actor);
 	}
 
     /**
@@ -75,6 +122,13 @@ public class Game extends ApplicationAdapter {
         // нижнего угла экрана.
         sprite.draw(spriteBatch);
         spriteBatch.end();
+
+        // Производим изменение сцены, будет вызван метод act у всех привязанных
+        // к сцене объектов. В качестве параметра ожидается время в сек с момента
+        // последней отрисовки сцены.
+        stage.act(Gdx.graphics.getDeltaTime());
+        // Отрисовываем сцену (точнее все объекты привязанные к ней).
+        stage.draw();
 	}
 
     /**
