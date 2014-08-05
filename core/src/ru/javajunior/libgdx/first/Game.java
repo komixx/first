@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
@@ -49,6 +50,13 @@ public class Game extends ApplicationAdapter {
     private Actor actor;
 
     /**
+     * Группа - контейнер для нескольких актеров, позволяет управлять
+     * одновременно несколькими актерами как одним целым, например перемещая,
+     * масштабируя и прочее.
+     */
+    private Group group;
+
+    /**
      * Метод, который инициализирует игру. Этот метод вызывается самым первым,
      * его основная задача - подготовить необходимые ресурсы.
      */
@@ -84,7 +92,7 @@ public class Game extends ApplicationAdapter {
             // (или или другого контейнера, который содержит текущего актера).
             @Override
             public void act(float delta) {
-                actorSprite.setPosition(300, 50);
+                actorSprite.setPosition(250, 50);
                 actorSprite.setRotation(actorSprite.getRotation() + delta);
             }
 
@@ -99,6 +107,64 @@ public class Game extends ApplicationAdapter {
 
         // Добавляем актера к сцене (привязываем объект к сцене).
         stage.addActor(actor);
+
+        // инициализируем группу и добавим ее к сцене
+        group = new Group();
+        stage.addActor(group);
+
+        // добавим к группе пару актеров
+        group.addActor(new Actor(){
+            // Инициализируем спрайт куском рисунка тестуры, огрниченным координатами
+            // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
+            Sprite actorSprite = new Sprite(texture, 57, 10, 130, 40);
+            // Производит изменения над актером, которые должны были с ним произойти
+            // с момента последней отрисовки. Дергается при вызове метода act у сцены
+            // (или или другого контейнера, который содержит текущего актера).
+            @Override
+            public void act(float delta) {
+                actorSprite.setPosition(0, 0);
+                if (actorSprite.getScaleX() < 2) {
+                    actorSprite.setScale(actorSprite.getScaleX() + delta);
+                } else {
+                    actorSprite.setScale(0.1f);
+                }
+            }
+            // Отрисовывает актера. Дергается при вызове метода draw у сцены
+            // (или или другого контейнера, который содержит текущего актера).
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                actorSprite.draw(batch, parentAlpha);
+            }
+        });
+        group.addActor(new Actor(){
+            // Инициализируем спрайт куском рисунка тестуры, огрниченным координатами
+            // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
+            Sprite actorSprite = new Sprite(texture, 57, 10, 130, 40);
+            // Производит изменения над актером, которые должны были с ним произойти
+            // с момента последней отрисовки. Дергается при вызове метода act у сцены
+            // (или или другого контейнера, который содержит текущего актера).
+            @Override
+            public void act(float delta) {
+                actorSprite.setPosition(50, 0);
+                if (actorSprite.getScaleX() > 0.5) {
+                    actorSprite.setScale(actorSprite.getScaleX() - delta);
+                } else {
+                    actorSprite.setScale(2f);
+                }
+            }
+            // Отрисовывает актера. Дергается при вызове метода draw у сцены
+            // (или или другого контейнера, который содержит текущего актера).
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                actorSprite.draw(batch, parentAlpha);
+            }
+        });
+
+        // переместим группу
+        group.setPosition(50, 100);
+
+        // устанавливаем центр вращения
+        group.setOrigin(80, 20);
 	}
 
     /**
@@ -129,6 +195,9 @@ public class Game extends ApplicationAdapter {
         stage.act(Gdx.graphics.getDeltaTime());
         // Отрисовываем сцену (точнее все объекты привязанные к ней).
         stage.draw();
+
+        // повернем группу
+        group.setRotation(group.getRotation() - Gdx.graphics.getDeltaTime());
 	}
 
     /**
