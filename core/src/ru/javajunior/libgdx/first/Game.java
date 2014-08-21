@@ -1,22 +1,11 @@
 package ru.javajunior.libgdx.first;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-
 /**
- * Основной класс, реализует интерфейс ApplicationListener.
+ * Основной класс, расширяет класс com.badlogic.gdx.Game реализующий интерфейс ApplicationListener.
  * В игре должен быть по крайней игре один класс, который реализует такой интерфейс.
+ * com.badlogic.gdx.Game предоставляет реализацию работы с экранами по умолчанию.
  */
-public class Game extends ApplicationAdapter {
+public class Game extends com.badlogic.gdx.Game {
 
     private ScreensaverScreen screensaverScreen;
 
@@ -27,6 +16,8 @@ public class Game extends ApplicationAdapter {
     @Override
 	public void create () {
         screensaverScreen = new ScreensaverScreen();
+        // Устанавливает активный экран
+        setScreen(screensaverScreen);
     }
 
     /**
@@ -35,7 +26,7 @@ public class Game extends ApplicationAdapter {
      */
     @Override
 	public void render () {
-        screensaverScreen.render(Gdx.graphics.getDeltaTime());
+        super.render();
 	}
 
     /**
@@ -44,7 +35,7 @@ public class Game extends ApplicationAdapter {
      */
     @Override
     public void pause() {
-        screensaverScreen.pause();
+        super.pause();
     }
 
     /**
@@ -52,7 +43,7 @@ public class Game extends ApplicationAdapter {
      */
     @Override
     public void resume() {
-        screensaverScreen.resume();
+        super.resume();
     }
 
     /**
@@ -62,6 +53,7 @@ public class Game extends ApplicationAdapter {
      */
     @Override
     public void dispose() {
+        super.dispose();
         screensaverScreen.dispose();
     }
 }
