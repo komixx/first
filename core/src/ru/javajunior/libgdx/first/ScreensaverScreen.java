@@ -1,6 +1,7 @@
 package ru.javajunior.libgdx.first;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -159,6 +160,7 @@ public class ScreensaverScreen implements Screen {
 
         // устанавливаем центр вращения
         group.setOrigin(80, 20);
+
     }
 
     @Override
@@ -197,7 +199,23 @@ public class ScreensaverScreen implements Screen {
 
     @Override
     public void show() {
-
+        // Устанавлиаем обработчик событий ввода
+        Gdx.input.setInputProcessor(new InputAdapter(){
+            /** Вызывается при прикосновении к сенсорному экрану и нажатии на кнопку мыши.
+             * Параметр button должен быть {@link com.badlogic.gdx.Input.Buttons#LEFT} для
+             * Android и iOS.
+             * @param screenX Координата по оси x, от левого верхнего угла.
+             * @param screenY Координата по оси y, от левого верхнего угла.
+             * @param pointer идентификатор события. Если экран поддерживает мультитач,
+             *                то у разных прикосновений будут разные идентификаторы.
+             * @param button кнопка мыши, которая была нажата. Для сенсорного экрана будет Buttons.LEFT
+             * @return было ли событие обработано */
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                Game.getInstance().showMenu();
+                return true;
+            }
+        });
     }
 
     @Override

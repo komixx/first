@@ -1,8 +1,5 @@
 package ru.javajunior.libgdx.first;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-
 /**
  * Основной класс, расширяет класс com.badlogic.gdx.Game реализующий интерфейс ApplicationListener.
  * В игре должен быть по крайней игре один класс, который реализует такой интерфейс.
@@ -10,8 +7,19 @@ import com.badlogic.gdx.InputAdapter;
  */
 public class Game extends com.badlogic.gdx.Game {
 
+    private static Game game;
     private ScreensaverScreen screensaverScreen;
     private MenuScreen menuScreen;
+
+    private Game() {
+    }
+
+    public static synchronized Game getInstance(){
+        if (game == null){
+            game = new Game();
+        }
+        return game;
+    }
 
     /**
      * Метод, который инициализирует игру. Этот метод вызывается самым первым,
@@ -23,23 +31,6 @@ public class Game extends com.badlogic.gdx.Game {
         menuScreen = new MenuScreen();
         // Устанавливает активный экран
         setScreen(screensaverScreen);
-        // Устанавлиаем обработчик событий ввода
-        Gdx.input.setInputProcessor(new InputAdapter(){
-            /** Вызывается при прикосновении к сенсорному экрану и нажатии на кнопку мыши.
-             * Параметр button должен быть {@link com.badlogic.gdx.Input.Buttons#LEFT} для
-             * Android и iOS.
-             * @param screenX Координата по оси x, от левого верхнего угла.
-             * @param screenY Координата по оси y, от левого верхнего угла.
-             * @param pointer идентификатор события. Если экран поддерживает мультитач,
-             *                то у разных прикосновений будут разные идентификаторы.
-             * @param button кнопка мыши, которая была нажата. Для сенсорного экрана будет Buttons.LEFT
-             * @return было ли событие обработано */
-            @Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                setScreen(menuScreen);
-                return true;
-            }
-        });
     }
 
     /**
@@ -77,5 +68,13 @@ public class Game extends com.badlogic.gdx.Game {
     public void dispose() {
         super.dispose();
         screensaverScreen.dispose();
+    }
+
+    public void showMenu() {
+        setScreen(menuScreen);
+    }
+
+    public void showScreensaver() {
+        setScreen(screensaverScreen);
     }
 }
