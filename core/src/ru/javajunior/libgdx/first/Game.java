@@ -68,6 +68,7 @@ public class Game extends com.badlogic.gdx.Game {
     public void dispose() {
         super.dispose();
         screensaverScreen.dispose();
+        menuScreen.dispose();
     }
 
     public void showMenu() {

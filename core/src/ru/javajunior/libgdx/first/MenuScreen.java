@@ -3,6 +3,10 @@ package ru.javajunior.libgdx.first;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
@@ -14,6 +18,8 @@ public class MenuScreen extends ScreenAdapter{
      * Сцена. Содержит управляет всем что имеется на экране.
      */
     private Stage stage;
+
+    private Actor button;
 
     /**
      * Создает и инициализирует экран меню
@@ -32,10 +38,23 @@ public class MenuScreen extends ScreenAdapter{
              * @return было ли событие обработано */
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                Game.getInstance().showScreensaver();
-                return true;
+                return super.touchDown(screenX, screenY, pointer, button);
             }
         };
+        stage.addActor(button = new Actor());
+        button.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event instanceof InputEvent) {
+                    if (((InputEvent) event).getType() == InputEvent.Type.touchDown) {
+                        Game.getInstance().showScreensaver();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+        button.setSize(stage.getWidth(), stage.getHeight());
     }
 
     /**
