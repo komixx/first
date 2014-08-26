@@ -4,9 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
@@ -42,16 +41,11 @@ public class MenuScreen extends ScreenAdapter{
             }
         };
         stage.addActor(button = new Actor());
-        button.addListener(new EventListener() {
+        button.addListener(new InputListener() {
             @Override
-            public boolean handle(Event event) {
-                if (event instanceof InputEvent) {
-                    if (((InputEvent) event).getType() == InputEvent.Type.touchDown) {
-                        Game.getInstance().showScreensaver();
-                        return true;
-                    }
-                }
-                return false;
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Game.getInstance().showScreensaver();
+                return true;
             }
         });
         button.setSize(stage.getWidth(), stage.getHeight());
