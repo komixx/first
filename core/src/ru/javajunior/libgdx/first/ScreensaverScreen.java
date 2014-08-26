@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,12 +21,6 @@ public class ScreensaverScreen implements Screen {
      * Отрисовщик спрайтов, умеет рисовать картинки в нужном размере и в нужных местах.
      */
     private SpriteBatch spriteBatch;
-
-    /**
-     * Текстура. Это картинка, база для графической части игры. Игра может
-     * содержать множество текстур.
-     */
-    private Texture texture;
 
     /**
      * Регион текстуры - предназначен для работы с частью текстуры.
@@ -59,16 +52,13 @@ public class ScreensaverScreen implements Screen {
     public ScreensaverScreen() {
         spriteBatch = new SpriteBatch();
 
-        // Инициализируем текстуру графическим файлом.
-        texture = new Texture("badlogic.jpg");
-
         // Инициализируем регион куском рисунка тестуры, огрниченным координатами
         // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
-        textureRegion = new TextureRegion(texture, 57, 10, 130, 40);
+        textureRegion = new TextureRegion(Game.getInstance().getTexture(), 57, 10, 130, 40);
 
         // Инициализируем спрайт куском рисунка тестуры, огрниченным координатами
         // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
-        sprite = new Sprite(texture, 57, 10, 130, 40);
+        sprite = new Sprite(Game.getInstance().getTexture(), 57, 10, 130, 40);
         sprite.setPosition(300, 150);
         sprite.setRotation(180);
 
@@ -80,7 +70,7 @@ public class ScreensaverScreen implements Screen {
 
             // Инициализируем спрайт куском рисунка тестуры, огрниченным координатами
             // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
-            Sprite actorSprite = new Sprite(texture, 57, 10, 130, 40);
+            Sprite actorSprite = new Sprite(Game.getInstance().getTexture(), 57, 10, 130, 40);
 
             // Производит изменения над актером, которые должны были с ним произойти
             // с момента последней отрисовки. Дергается при вызове метода act у сцены
@@ -111,7 +101,7 @@ public class ScreensaverScreen implements Screen {
         group.addActor(new Actor(){
             // Инициализируем спрайт куском рисунка тестуры, огрниченным координатами
             // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
-            Sprite actorSprite = new Sprite(texture, 57, 10, 130, 40);
+            Sprite actorSprite = new Sprite(Game.getInstance().getTexture(), 57, 10, 130, 40);
             // Производит изменения над актером, которые должны были с ним произойти
             // с момента последней отрисовки. Дергается при вызове метода act у сцены
             // (или или другого контейнера, который содержит текущего актера).
@@ -134,7 +124,7 @@ public class ScreensaverScreen implements Screen {
         group.addActor(new Actor(){
             // Инициализируем спрайт куском рисунка тестуры, огрниченным координатами
             // x=57, y=10 от левого верхнего угла текстуры и размерами (130, 40)
-            Sprite actorSprite = new Sprite(texture, 57, 10, 130, 40);
+            Sprite actorSprite = new Sprite(Game.getInstance().getTexture(), 57, 10, 130, 40);
             // Производит изменения над актером, которые должны были с ним произойти
             // с момента последней отрисовки. Дергается при вызове метода act у сцены
             // (или или другого контейнера, который содержит текущего актера).
@@ -172,7 +162,7 @@ public class ScreensaverScreen implements Screen {
         spriteBatch.begin();
         // Указываем отрисовать текстуру полностью в координатах x=0 y=0 от левого
         // нижнего угла экрана.
-        spriteBatch.draw(texture, 0, 0);
+        spriteBatch.draw(Game.getInstance().getTexture(), 0, 0);
         // Указываем отрисовать регион текстуры в координатах x=300 y=200 от левого
         // нижнего угла экрана.
         spriteBatch.draw(textureRegion, 300, 210);
@@ -236,6 +226,5 @@ public class ScreensaverScreen implements Screen {
     @Override
     public void dispose() {
         spriteBatch.dispose();
-        texture.dispose();
     }
 }

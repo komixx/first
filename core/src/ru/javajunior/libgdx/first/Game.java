@@ -1,5 +1,7 @@
 package ru.javajunior.libgdx.first;
 
+import com.badlogic.gdx.graphics.Texture;
+
 /**
  * Основной класс, расширяет класс com.badlogic.gdx.Game реализующий интерфейс ApplicationListener.
  * В игре должен быть по крайней игре один класс, который реализует такой интерфейс.
@@ -8,6 +10,16 @@ package ru.javajunior.libgdx.first;
 public class Game extends com.badlogic.gdx.Game {
 
     private static Game game;
+
+    /**
+     * Текстура. Это картинка, база для графической части игры. Игра может
+     * содержать множество текстур. Для оптимизации в одной текстуре можно хранить
+     * сразу несколько рисунков и получать к ним доступ используя регионы тестур
+     * {@link com.badlogic.gdx.graphics.g2d.TextureRegion} или спрайты
+     * {@link com.badlogic.gdx.graphics.g2d.Sprite}.
+     */
+    private Texture texture;
+
     private ScreensaverScreen screensaverScreen;
     private MenuScreen menuScreen;
 
@@ -27,9 +39,15 @@ public class Game extends com.badlogic.gdx.Game {
      */
     @Override
 	public void create () {
+
+        // Инициализирует текстуру графическим файлом.
+        texture = new Texture("badlogic.jpg");
+
+        // Инициализирует экраны заставки и меню.
         screensaverScreen = new ScreensaverScreen();
         menuScreen = new MenuScreen();
-        // Устанавливает активный экран
+
+        // Устанавливает активный экран.
         setScreen(screensaverScreen);
     }
 
@@ -69,6 +87,7 @@ public class Game extends com.badlogic.gdx.Game {
         super.dispose();
         screensaverScreen.dispose();
         menuScreen.dispose();
+        texture.dispose();
     }
 
     public void showMenu() {
@@ -77,5 +96,9 @@ public class Game extends com.badlogic.gdx.Game {
 
     public void showScreensaver() {
         setScreen(screensaverScreen);
+    }
+
+    public Texture getTexture() {
+        return texture;
     }
 }
